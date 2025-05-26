@@ -1,0 +1,31 @@
+{
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:3000",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "HackerViewer",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": true,
+      "shell": {
+        "all": true,
+        "execute": true
+      },
+      "fs": {
+        "all": true
+      }
+    },
+    "windows": [
+      {
+        "title": "Hacker Viewer",
+        "width": 1280,
+        "height": 720,
+        "fullscreen": true
+      }
+    ]
+  }
+}
