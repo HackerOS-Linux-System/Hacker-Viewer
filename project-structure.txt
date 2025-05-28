@@ -1,0 +1,42 @@
+Hacker-Viewer-main/
+├── src-tauri/
+│   ├── src/
+│   │   ├── main.rs
+│   │   ├── config.rs
+│   │   ├── commands.rs
+│   ├── tauri.conf.json
+├── src/
+│   ├── index.html
+│   ├── css/
+│   │   ├── styles.css
+│   ├── js/
+│   │   ├── app.jsx
+│   │   ├── components/
+│   │   │   ├── SettingsDialog.jsx
+│   │   │   ├── LoginForm.jsx
+│   │   │   ├── TabBar.jsx
+│   ├── assets/
+│   │   ├── icons/
+│   │   │   ├── settings.png
+│   │   │   ├── hacker-menu.png
+│   │   │   ├── platform-icons/
+│   │   │   │   ├── prime-video.png
+│   │   │   │   ├── disney.png
+│   │   │   │   ├── youtube.png
+│   │   │   │   ├── twitch.png
+│   │   │   │   ├── eleven-sports.png
+│   │   │   │   ├── netflix.png
+│   │   │   │   ├── hbo.png
+│   ├── locales/
+│   │   ├── en.json
+│   │   ├── pl.json
+│   │   ├── es.json
+│   │   ├── de.json
+│   │   ├── fr.json
+│   │   ├── it.json
+│   │   ├── pt.json
+├── Cargo.toml
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+├── postcss.config.js
