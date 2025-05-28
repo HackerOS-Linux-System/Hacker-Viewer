@@ -10,6 +10,7 @@
     "interface_scale": "Interface Scale",
     "brightness": "Brightness",
     "gpu_acceleration": "Enable GPU Acceleration",
+    "hdr_enabled": "Enable HDR",
     "theme": "Theme",
     "language": "Language",
     "dark": "Dark",
