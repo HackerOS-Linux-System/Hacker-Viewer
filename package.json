@@ -1,7 +1,7 @@
 {
   "name": "hacker-viewer",
   "version": "1.0.0",
-  "description": "Hacker Viewer frontend",
+  "description": "Hacker Viewer frontend with 4K HDR support",
   "main": "src/js/app.jsx",
   "scripts": {
     "start": "vite",
