@@ -8,7 +8,7 @@ mod config;
 mod commands;
 
 fn main() {
-    env_logger::init(); // Inicjalizacja loggera
+    env_logger::init(); // Initialize logger
 
     let quit = CustomMenuItem::new("quit".to_string(), "Quit");
     let restart = CustomMenuItem::new("restart".to_string(), "Restart App");
