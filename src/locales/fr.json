@@ -1,0 +1,22 @@
+{
+    "settings": "Paramètres",
+    "hacker_menu": "Menu Hacker",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "token": "Jeton",
+    "remember": "Se souvenir",
+    "login": "Se connecter",
+    "cinema_mode": "Mode Cinéma",
+    "interface_scale": "Échelle de l'interface",
+    "brightness": "Luminosité",
+    "gpu_acceleration": "Activer l'accélération GPU",
+    "hdr_enabled": "Activer HDR",
+    "theme": "Thème",
+    "language": "Langue",
+    "dark": "Sombre",
+    "light": "Clair",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "login_failed": "Échec de la connexion : {{error}}",
+    "settings_failed": "Échec de l'enregistrement des paramètres : {{error}}"
+}
