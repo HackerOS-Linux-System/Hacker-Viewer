@@ -1,0 +1,17 @@
+{
+    "settings": "Ustawienia",
+    "hacker_menu": "Menu Hackera",
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "token": "Token",
+    "remember": "Zapamiętaj",
+    "login": "Zaloguj",
+    "cinema_mode": "Tryb Kinowy",
+    "interface_scale": "Skala interfejsu",
+    "brightness": "Jasność",
+    "gpu_acceleration": "Włącz akcelerację GPU",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "login_failed": "Logowanie nie powiodło się: {{error}}",
+    "settings_failed": "Nie udało się zapisać ustawień: {{error}}"
+}
