@@ -4,6 +4,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    font-size: calc(12px * var(--scale, 1));
 }
 
 .tab-container {
@@ -46,4 +47,23 @@ input, button {
 
 .webview {
     flex-grow: 1;
+    border: none;
+}
+
+.settings-button, .hacker-menu-button {
+    position: absolute;
+    top: 10px;
+    padding: 10px;
+    background-color: #4B2E83;
+    border: 1px solid #664B8C;
+    cursor: pointer;
+}
+
+.settings-button {
+    left: 10px;
+}
+
+.hacker-menu-button {
+    bottom: 10px;
+    left: 10px;
 }
