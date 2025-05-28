@@ -4,6 +4,9 @@ import { useTranslation } from 'react-i18next';
 import ReactDOM from 'react-dom/client';
 import i18n from 'i18next';
 import HttpBackend from 'i18next-http-backend';
+import SettingsDialog from './components/SettingsDialog';
+import LoginForm from './components/LoginForm';
+import TabBar from './components/TabBar';
 
 i18n.use(HttpBackend).init({
     lng: 'en',
@@ -31,6 +34,7 @@ function App() {
     const [scale, setScale] = useState(1.0);
     const [brightness, setBrightness] = useState(50);
     const [gpuAcceleration, setGpuAcceleration] = useState(true);
+    const [hdrEnabled, setHdrEnabled] = useState(true);
     const [language, setLanguage] = useState('en');
     const [error, setError] = useState('');
 
@@ -40,6 +44,7 @@ function App() {
             setScale(settings.interface_scale || 1.0);
             setBrightness(settings.brightness || 50);
             setGpuAcceleration(settings.gpu_acceleration !== false);
+            setHdrEnabled(settings.hdr_enabled !== false);
             setTheme(settings.theme || 'dark');
             setLanguage(settings.language || 'en');
             i18n.changeLanguage(settings.language || 'en');
@@ -54,6 +59,7 @@ function App() {
             }
             if (e.key === 'F11') toggleCinemaMode();
             if (e.ctrlKey && e.key === 's') setSettingsOpen(true);
+            if (e.ctrlKey && e.key === 'f') invoke('system_action', { action: 'toggle_fullscreen' });
         };
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
@@ -62,17 +68,16 @@ function App() {
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
         document.documentElement.style.setProperty('--scale', scale);
-    }, [theme, scale]);
+        if (hdrEnabled) {
+            document.documentElement.classList.add('hdr');
+        } else {
+            document.documentElement.classList.remove('hdr');
+        }
+    }, [theme, scale, hdrEnabled]);
 
-    const handleLogin = async (platform) => {
-        const username = document.getElementById(`${platform}_username`).value;
-        const password = document.getElementById(`${platform}_password`).value;
-        const token = document.getElementById(`${platform}_token`).value;
-        const remember = document.getElementById(`${platform}_remember`).checked;
-
+    const handleLogin = async (platform, username, password, token, remember) => {
         try {
             if (!token) {
-                // Attempt to fetch token (placeholder)
                 const fetchedToken = await invoke('fetch_platform_token', { platform, username, password });
                 await invoke('save_login', { platform, username, password, token: fetchedToken, remember });
             } else {
@@ -89,7 +94,8 @@ function App() {
         setCinemaMode(!cinemaMode);
         const elements = ['.tab-bar', '.login-container', '.settings-button', '.hacker-menu-button'];
         elements.forEach(selector => {
-            document.querySelector(selector).style.display = cinemaMode ? 'flex' : 'none';
+            const el = document.querySelector(selector);
+            if (el) el.style.display = cinemaMode ? 'flex' : 'none';
         });
         if (!cinemaMode) {
             document.querySelector('.webview').requestFullscreen();
@@ -98,7 +104,7 @@ function App() {
         }
     };
 
-    const handleSettingsSave = async () => {
+    const handleSettingsSave = async (settings) => {
         try {
             await invoke('save_login', {
                 platform: 'settings',
@@ -106,13 +112,14 @@ function App() {
                 password: '',
                 token: '',
                 remember: true,
-                interface_scale: scale,
-                brightness,
-                gpu_acceleration: gpuAcceleration,
-                theme,
-                language,
+                interface_scale: settings.scale,
+                brightness: settings.brightness,
+                gpu_acceleration: settings.gpuAcceleration,
+                theme: settings.theme,
+                language: settings.language,
+                hdr_enabled: settings.hdEnabled,
             });
-            i18n.changeLanguage(language);
+            i18n.changeLanguage(settings.language);
             setSettingsOpen(false);
             setError('');
         } catch (error) {
@@ -122,113 +129,49 @@ function App() {
 
     return (
         <div className="tab-container">
-            {error && <div className="bg-red-500 text-white p-2 rounded mb-2">{error}</div>}
-            <button className="settings-button hover:scale-110" onClick={() => setSettingsOpen(true)}>
+            {error && <div className="error-banner">{error}</div>}
+            <button
+                className="settings-button"
+                onClick={() => setSettingsOpen(true)}
+                aria-label={t('settings')}
+            >
                 <img src="/assets/icons/settings.png" alt="Settings" />
                 {t('settings')}
             </button>
-            <button className="hacker-menu-button hover:scale-110" onClick={() => invoke('system_action', { action: 'show_menu' })}>
+            <button
+                className="hacker-menu-button"
+                onClick={() => invoke('system_action', { action: 'show_menu' })}
+                aria-label={t('hacker_menu')}
+            >
                 <img src="/assets/icons/hacker-menu.png" alt="Hacker Menu" />
                 {t('hacker_menu')}
             </button>
-            <div className="tab-bar" style={{ display: cinemaMode ? 'none' : 'flex' }}>
-                {Object.keys(platforms).map(platform => (
-                    <div
-                        key={platform}
-                        className={`tab ${activeTab === platform ? 'active' : ''}`}
-                        onClick={() => setActiveTab(platform)}
-                    >
-                        <img src={platforms[platform].icon} alt={platform} />
-                        {platform}
-                    </div>
-                ))}
-            </div>
-            <div className="login-container" style={{ display: cinemaMode ? 'none' : 'flex' }}>
-                <input
-                    id={`${activeTab}_username`}
-                    type="text"
-                    placeholder={t('username')}
-                    defaultValue={logins[activeTab]?.username || ''}
-                    className="p-2 border border-gray-600 rounded bg-gray-700 text-white"
-                />
-                <input
-                    id={`${activeTab}_password`}
-                    type="password"
-                    placeholder={t('password')}
-                    defaultValue={logins[activeTab]?.password || ''}
-                    className="p-2 border border-gray-600 rounded bg-gray-700 text-white"
-                />
-                <input
-                    id={`${activeTab}_token`}
-                    type="text"
-                    placeholder={t('token')}
-                    defaultValue={logins[activeTab]?.token || ''}
-                    className="p-2 border border-gray-600 rounded bg-gray-700 text-white"
-                />
-                <div className="flex items-center">
-                    <input id={`${activeTab}_remember`} type="checkbox" className="mr-2" />
-                    <label htmlFor={`${activeTab}_remember`} className="text-gray-300">{t('remember')}</label>
-                </div>
-                <button onClick={() => handleLogin(activeTab)} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded">
-                    {t('login')}
-                </button>
-                <button onClick={toggleCinemaMode} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded">
-                    {t('cinema_mode')}
-                </button>
-            </div>
+            <TabBar
+                platforms={platforms}
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                cinemaMode={cinemaMode}
+            />
+            <LoginForm
+                platform={activeTab}
+                logins={logins}
+                onLogin={handleLogin}
+                cinemaMode={cinemaMode}
+                t={t}
+            />
             <iframe
                 src={platforms[activeTab].url}
                 className="webview"
                 title={activeTab}
+                allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
             />
             {settingsOpen && (
-                <div className="settings-dialog">
-                    <h2 className="text-lg font-bold text-white mb-4">{t('settings')}</h2>
-                    <label>{t('interface_scale')}</label>
-                    <input
-                        type="range"
-                        min="50"
-                        max="200"
-                        value={scale * 100}
-                        onChange={e => setScale(e.target.value / 100)}
-                    />
-                    <label>{t('brightness')}</label>
-                    <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={brightness}
-                        onChange={e => setBrightness(parseInt(e.target.value))}
-                    />
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={gpuAcceleration}
-                            onChange={e => setGpuAcceleration(e.target.checked)}
-                        />
-                        {t('gpu_acceleration')}
-                    </label>
-                    <label>{t('theme')}</label>
-                    <select value={theme} onChange={e => setTheme(e.target.value)}>
-                        <option value="dark">{t('dark')}</option>
-                        <option value="light">{t('light')}</option>
-                    </select>
-                    <label>{t('language')}</label>
-                    <select value={language} onChange={e => setLanguage(e.target.value)}>
-                        <option value="en">English</option>
-                        <option value="pl">Polski</option>
-                        <option value="es">Español</option>
-                        <option value="de">Deutsch</option>
-                    </select>
-                    <div className="flex gap-2 mt-4">
-                        <button onClick={handleSettingsSave} className="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded flex-1">
-                            {t('save')}
-                        </button>
-                        <button onClick={() => setSettingsOpen(false)} className="bg-gray-600 hover:bg-gray-700 text-white p-2 rounded flex-1">
-                            {t('cancel')}
-                        </button>
-                    </div>
-                </div>
+                <SettingsDialog
+                    settings={{ scale, brightness, gpuAcceleration, theme, language, hdrEnabled }}
+                    onSave={handleSettingsSave}
+                    onClose={() => setSettingsOpen(false)}
+                    t={t}
+                />
             )}
         </div>
     );
