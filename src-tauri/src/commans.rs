@@ -2,7 +2,7 @@ use tauri::{AppHandle, Manager};
 use crate::config::{Settings, LoginData};
 use std::process::Command;
 use log::{info, error};
-use reqwest::Client, Error};
+use reqwest::Client;
 
 #[tauri::command]
 pub async fn save_login(
@@ -16,11 +16,12 @@ pub async fn save_login(
     gpu_acceleration: Option<bool>,
     theme: Option<String>,
     language: Option<String>,
+    hdr_enabled: Option<bool>,
 ) -> Result<(), String> {
     info!("Saving settings for platform: {}", platform);
     let mut settings = Settings::load()?;
     if remember && platform != "settings" {
-        settings.saved_logins.insert(platform, keyring.insert username, LoginData { password password, token });
+        settings.saved_logins.insert(platform, LoginData { username, password, token });
     } else if platform != "settings" {
         settings.saved_logins.remove(&platform);
     }
@@ -38,6 +39,9 @@ pub async fn save_login(
     }
     if let Some(lang) = language {
         settings.language = lang;
+    }
+    if let Some(hdr) = hdr_enabled {
+        settings.hdr_enabled = hdr;
     }
     settings.save()?;
     Ok(())
@@ -77,12 +81,17 @@ pub fn system_action(action: String) -> Result<(), String> {
             .arg("exit")
             .spawn()
             .map_err(|e| format!("Failed to exit sway: {}", e))?,
+        "toggle_fullscreen" => Command::new("swaymsg")
+            .arg("fullscreen")
+            .arg("toggle")
+            .spawn()
+            .map_err(|e| format!("Failed to toggle fullscreen: {}", e))?,
         _ => return Err("Invalid action".to_string()),
     };
     Ok(())
 }
 
-// Example API token fetch (placeholder)
+// Placeholder for platform-specific token fetching
 #[tauri::command]
 pub async fn fetch_platform_token(platform: String, username: String, password: String) -> Result<String, String> {
     info!("Fetching token for platform: {}", platform);
