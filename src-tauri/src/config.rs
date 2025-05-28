@@ -25,6 +25,7 @@ pub struct Settings {
     pub gpu_acceleration: bool,
     pub theme: String,
     pub language: String,
+    pub hdr_enabled: bool, // Added for HDR support
     pub saved_logins: HashMap<String, LoginData>,
 }
 
@@ -71,6 +72,7 @@ impl Settings {
                 gpu_acceleration: true,
                 theme: "dark".to_string(),
                 language: "en".to_string(),
+                hdr_enabled: true,
                 saved_logins: HashMap::new(),
             })
         }
@@ -145,12 +147,12 @@ impl Settings {
         let ciphertext = encrypted_data
             .get(12..)
             .ok_or_else(|| format!("Invalid ciphertext for {}", field))?;
-        let nonce = Nonce::try_assume_unique_for_key(&nonce_bytes)
+        let nonce = Nonce::try_assume_unique_for_key(nonce_bytes)
             .map_err(|e| format!("Invalid nonce: {}", e))?;
         let mut decrypted_data = ciphertext.to_vec();
         key.open_in_place(nonce, AAD::empty(), &mut decrypted_data)
             .map_err(|e| format!("Decryption failed: {}", e))?;
         String::from_utf8(decrypted_data)
-            .map_err(|e| e format!("Failed to convert decrypted {} to string: {}", field))?;
+            .map_err(|e| format!("Failed to convert decrypted {} to string: {}", field, e))
     }
 }
