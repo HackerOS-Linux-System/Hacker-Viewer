@@ -10,6 +10,7 @@
     "interface_scale": "Schnittstellenskalierung",
     "brightness": "Helligkeit",
     "gpu_acceleration": "GPU-Beschleunigung aktivieren",
+    "hdr_enabled": "HDR aktivieren",
     "theme": "Thema",
     "language": "Sprache",
     "dark": "Dunkel",
