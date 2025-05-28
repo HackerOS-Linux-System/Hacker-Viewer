@@ -1,8 +1,8 @@
 [package]
 name = "hacker-viewer"
 version = "1.0.0"
-description = "Hacker Viewer - Streaming Platform Browser"
-authors = ["VoidArc Studio"]
+description = "Hacker Viewer - Streaming Platform Browser with 4K HDR Support"
+authors = ["Your Name"]
 edition = "2021"
 
 [[bin]]
@@ -20,6 +20,7 @@ log = "0.4"
 env_logger = "0.10"
 reqwest = { version = "0.11", features = ["json"] }
 tokio = { version = "1.0", features = ["rt-multi-thread"] }
+zbus = "3.14" # For Wayland integration
 
 [profile.release]
 opt-level = 3
