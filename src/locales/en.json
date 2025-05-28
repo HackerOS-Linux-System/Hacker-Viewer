@@ -1,0 +1,17 @@
+{
+    "settings": "Settings",
+    "hacker_menu": "Hacker Menu",
+    "username": "Username",
+    "password": "Password",
+    "token": "Token",
+    "remember": "Remember",
+    "login": "Login",
+    "cinema_mode": "Cinema Mode",
+    "interface_scale": "Interface Scale",
+    "brightness": "Brightness",
+    "gpu_acceleration": "Enable GPU Acceleration",
+    "save": "Save",
+    "cancel": "Cancel",
+    "login_failed": "Login failed: {{error}}",
+    "settings_failed": "Failed to save settings: {{error}}"
+}
