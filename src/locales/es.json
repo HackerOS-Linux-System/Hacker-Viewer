@@ -1,0 +1,21 @@
+{
+    "settings": "Configuraciones",
+    "hacker_menu": "Menú Hacker",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "token": "Token",
+    "remember": "Recordar",
+    "login": "Iniciar sesión",
+    "cinema_mode": "Modo Cine",
+    "interface_scale": "Escala de interfaz",
+    "brightness": "Brillo",
+    "gpu_acceleration": "Habilitar aceleración GPU",
+    "theme": "Tema",
+    "language": "Idioma",
+    "dark": "Oscuro",
+    "light": "Claro",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "login_failed": "Inicio de sesión fallido: {{error}}",
+    "settings_failed": "No se pudieron guardar las configuraciones: {{error}}"
+}
