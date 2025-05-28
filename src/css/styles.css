@@ -1,6 +1,6 @@
-/* Custom styles to complement Tailwind CSS */
+/* Custom styles for HDR and 4K */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
+    from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -10,27 +10,27 @@
 }
 
 .tab-container {
-    @apply flex flex-col h-screen;
+    @apply flex flex-col h-screen bg-gray-900;
 }
 
 .tab-bar {
-    @apply flex bg-gray-800 border-b border-gray-700;
+    @apply flex bg-gray-800 border-b border-gray-700 p-2;
 }
 
 .tab {
-    @apply flex items-center px-4 py-2 bg-gray-900 text-white border border-gray-700 cursor-pointer transition-colors duration-200;
+    @apply flex items-center px-6 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg cursor-pointer transition-all duration-300 hover:bg-indigo-700;
 }
 
 .tab img {
-    @apply w-6 h-6 mr-2;
+    @apply w-8 h-8 mr-3;
 }
 
 .tab.active {
-    @apply bg-indigo-600;
+    @apply bg-indigo-600 border-indigo-500;
 }
 
 .login-container {
-    @apply flex gap-2 p-2 bg-gray-800 flex-wrap;
+    @apply flex gap-4 p-4 bg-gray-800 flex-wrap;
 }
 
 .webview {
@@ -38,31 +38,35 @@
 }
 
 .settings-button, .hacker-menu-button {
-    @apply fixed p-2 bg-indigo-600 border border-gray-700 rounded-full shadow-lg z-50 flex items-center gap-2 transition-transform duration-200;
+    @apply fixed p-3 bg-indigo-600 border border-gray-700 rounded-full shadow-xl z-50 flex items-center gap-3 transition-transform duration-300 hover:scale-110;
 }
 
 .settings-button img, .hacker-menu-button img {
-    @apply w-6 h-6;
+    @apply w-8 h-8;
 }
 
 .settings-button {
-    @apply top-4 left-4;
+    @apply top-6 left-6;
 }
 
 .hacker-menu-button {
-    @apply bottom-4 left-4;
+    @apply bottom-6 left-6;
 }
 
 .settings-dialog {
-    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-6 border border-gray-700 rounded-lg shadow-2xl z-50 w-80 animate-[fadeIn_0.3s_ease];
+    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-800 p-8 border border-gray-700 rounded-2xl shadow-2xl z-50 w-[32rem] animate-[fadeIn_0.3s_ease];
 }
 
 .settings-dialog label {
-    @apply block mb-2 text-sm font-medium text-gray-300;
+    @apply block mb-3 text-base font-semibold text-gray-200;
 }
 
 .settings-dialog input, .settings-dialog select {
-    @apply w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded text-white;
+    @apply w-full p-3 mb-4 bg-gray-700 border border-gray-600 rounded-lg text-white text-lg;
+}
+
+.error-banner {
+    @apply bg-red-600 text-white p-4 rounded-lg mb-4 shadow-md;
 }
 
 @media (max-width: 768px) {
@@ -70,6 +74,19 @@
         @apply flex-col;
     }
     .tab {
-        @apply px-2 py-1 text-sm;
+        @apply px-4 py-2 text-base;
+    }
+    .settings-dialog {
+        @apply w-[90%];
+    }
+}
+
+@media (min-resolution: 2dppx) {
+    /* HiDPI/4K adjustments */
+    .tab img, .settings-button img, .hacker-menu-button img {
+        @apply w-10 h-10;
+    }
+    .settings-dialog {
+        @apply w-[40rem];
     }
 }
