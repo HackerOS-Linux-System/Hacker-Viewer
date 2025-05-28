@@ -26,10 +26,11 @@
     "windows": [
       {
         "title": "Hacker Viewer",
-        "width": 1280,
-        "height": 720,
+        "width": 3840,
+        "height": 2160,
         "resizable": true,
-        "fullscreen": false
+        "fullscreen": true,
+        "decorations": false
       }
     ]
   }
