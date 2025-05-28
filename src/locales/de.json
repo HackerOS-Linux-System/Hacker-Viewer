@@ -1,0 +1,21 @@
+{
+    "settings": "Einstellungen",
+    "hacker_menu": "Hacker-Menü",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "token": "Token",
+    "remember": "Merken",
+    "login": "Anmelden",
+    "cinema_mode": "Kino-Modus",
+    "interface_scale": "Schnittstellenskalierung",
+    "brightness": "Helligkeit",
+    "gpu_acceleration": "GPU-Beschleunigung aktivieren",
+    "theme": "Thema",
+    "language": "Sprache",
+    "dark": "Dunkel",
+    "light": "Hell",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "login_failed": "Anmeldung fehlgeschlagen: {{error}}",
+    "settings_failed": "Einstellungen konnten nicht gespeichert werden: {{error}}"
+}
