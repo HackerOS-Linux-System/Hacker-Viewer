@@ -9,7 +9,6 @@ use ring::aead::chacha20_poly1305::CHACHA20_POLY1305;
 use keyring::Entry;
 use log::error;
 
-// Struktura dla danych logowania
 #[derive(Serialize, Deserialize, Clone)]
 pub struct LoginData {
     pub username: String,
@@ -19,16 +18,16 @@ pub struct LoginData {
     pub token: String,
 }
 
-// Struktura dla ustawień aplikacji
 #[derive(Serialize, Deserialize)]
 pub struct Settings {
     pub interface_scale: f32,
     pub brightness: i32,
     pub gpu_acceleration: bool,
+    pub theme: String,
+    pub language: String,
     pub saved_logins: HashMap<String, LoginData>,
 }
 
-// Pobieranie klucza z systemowego magazynu kluczy
 fn get_encryption_key() -> Result<[u8; 32], String> {
     let entry = Entry::new("hacker-viewer", "encryption-key")
         .map_err(|e| format!("Failed to access keyring: {}", e))?;
@@ -70,6 +69,8 @@ impl Settings {
                 interface_scale: 1.0,
                 brightness: 50,
                 gpu_acceleration: true,
+                theme: "dark".to_string(),
+                language: "en".to_string(),
                 saved_logins: HashMap::new(),
             })
         }
@@ -144,12 +145,12 @@ impl Settings {
         let ciphertext = encrypted_data
             .get(12..)
             .ok_or_else(|| format!("Invalid ciphertext for {}", field))?;
-        let nonce = Nonce::try_assume_unique_for_key(nonce_bytes)
+        let nonce = Nonce::try_assume_unique_for_key(&nonce_bytes)
             .map_err(|e| format!("Invalid nonce: {}", e))?;
         let mut decrypted_data = ciphertext.to_vec();
         key.open_in_place(nonce, AAD::empty(), &mut decrypted_data)
             .map_err(|e| format!("Decryption failed: {}", e))?;
         String::from_utf8(decrypted_data)
-            .map_err(|e| format!("Failed to convert decrypted {} to string: {}", field, e))
+            .map_err(|e| e format!("Failed to convert decrypted {} to string: {}", field))?;
     }
 }
