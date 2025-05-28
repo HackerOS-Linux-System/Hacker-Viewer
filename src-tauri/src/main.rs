@@ -1,6 +1,6 @@
 use tauri::{
     AppHandle, Manager, SystemTray, SystemTrayEvent, CustomMenuItem, SystemTrayMenu,
-    SystemTrayMenuItem,
+    SystemTrayMenuItem, WindowBuilder, WindowUrl,
 };
 use crate::commands::{save_login, load_logins, restart_app, system_action, get_decrypted_data};
 
@@ -38,6 +38,17 @@ fn main() {
                 _ => {}
             },
             _ => {}
+        })
+        .setup(|app| {
+            let window = WindowBuilder::new(
+                app,
+                "main",
+                WindowUrl::App("index.html".into())
+            )
+            .title("Hacker Viewer")
+            .fullscreen(true) // Start in fullscreen
+            .build()?;
+            Ok(())
         })
         .invoke_handler(tauri::generate_handler![
             save_login,
