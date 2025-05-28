@@ -1,0 +1,22 @@
+{
+    "settings": "Impostazioni",
+    "hacker_menu": "Menu Hacker",
+    "username": "Nome utente",
+    "password": "Password",
+    "token": "Token",
+    "remember": "Ricorda",
+    "login": "Accedi",
+    "cinema_mode": "Modalità Cinema",
+    "interface_scale": "Scala dell'interfaccia",
+    "brightness": "Luminosità",
+    "gpu_acceleration": "Abilita accelerazione GPU",
+    "hdr_enabled": "Abilita HDR",
+    "theme": "Tema",
+    "language": "Lingua",
+    "dark": "Scuro",
+    "light": "Chiaro",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "login_failed": "Accesso fallito: {{error}}",
+    "settings_failed": "Impossibile salvare le impostazioni: {{error}}"
+}
