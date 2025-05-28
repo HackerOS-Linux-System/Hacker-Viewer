@@ -17,6 +17,10 @@
       },
       "fs": {
         "all": true
+      },
+      "http": {
+        "all": true,
+        "request": true
       }
     },
     "windows": [
@@ -24,7 +28,8 @@
         "title": "Hacker Viewer",
         "width": 1280,
         "height": 720,
-        "fullscreen": true
+        "resizable": true,
+        "fullscreen": false
       }
     ]
   }
