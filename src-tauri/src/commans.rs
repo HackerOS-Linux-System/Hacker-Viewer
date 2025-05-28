@@ -1,18 +1,20 @@
 use tauri::{AppHandle, Manager};
 use crate::config::{Settings, LoginData};
 use std::process::Command;
+use log::{info, error};
 
-// Komenda do zapisywania danych logowania
 #[tauri::command]
 pub fn save_login(
     platform: String,
     username: String,
     password: String,
+    token: String,
     remember: bool,
 ) -> Result<(), String> {
+    info!("Saving login for platform: {}", platform);
     let mut settings = Settings::load()?;
     if remember {
-        settings.saved_logins.insert(platform, LoginData { username, password });
+        settings.saved_logins.insert(platform, LoginData { username, password, token });
     } else {
         settings.saved_logins.remove(&platform);
     }
@@ -20,34 +22,41 @@ pub fn save_login(
     Ok(())
 }
 
-// Komenda do wczytywania danych logowania
 #[tauri::command]
 pub fn load_logins() -> Result<Settings, String> {
+    info!("Loading settings");
     Settings::load()
 }
 
-// Komenda do restartu aplikacji
+#[tauri::command]
+pub fn get_decrypted_data(platform: String, field: String) -> Result<String, String> {
+    info!("Decrypting {} for platform: {}", field, platform);
+    let settings = Settings::load()?;
+    settings.decrypt_data(&platform, &field)
+}
+
 #[tauri::command]
 pub fn restart_app(app: AppHandle) -> Result<(), String> {
+    info!("Restarting application");
     tauri::api::process::restart(&app.env());
     Ok(())
 }
 
-// Komenda do akcji systemowych
 #[tauri::command]
 pub fn system_action(action: String) -> Result<(), String> {
+    info!("Executing system action: {}", action);
     match action.as_str() {
-        "reboot" => Command::new("reboot").spawn().map_err(|e| e.to_string())?,
-        "poweroff" => Command::new("poweroff").spawn().map_err(|e| e.to_string())?,
-        "sway_exit" => Command::new("swaymsg").arg("exit").spawn().map_err(|e| e.to_string())?,
+        "reboot" => Command::new("reboot")
+            .spawn()
+            .map_err(|e| format!("Failed to reboot: {}", e))?,
+        "poweroff" => Command::new("poweroff")
+            .spawn()
+            .map_err(|e| format!("Failed to poweroff: {}", e))?,
+        "sway_exit" => Command::new("swaymsg")
+            .arg("exit")
+            .spawn()
+            .map_err(|e| format!("Failed to exit sway: {}", e))?,
         _ => return Err("Invalid action".to_string()),
     };
     Ok(())
-}
-
-// Komenda do wczytania odszyfrowanego hasła dla platformy
-#[tauri::command]
-pub fn get_decrypted_password(platform: String) -> Result<String, String> {
-    let settings = Settings::load()?;
-    settings.decrypt_password(&platform)
 }
