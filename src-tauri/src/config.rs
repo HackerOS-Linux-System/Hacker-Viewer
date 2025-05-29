@@ -25,7 +25,7 @@ pub struct Settings {
     pub gpu_acceleration: bool,
     pub theme: String,
     pub language: String,
-    pub hdr_enabled: bool, // Added for HDR support
+    pub hdr_enabled: bool,
     pub saved_logins: HashMap<String, LoginData>,
 }
 
