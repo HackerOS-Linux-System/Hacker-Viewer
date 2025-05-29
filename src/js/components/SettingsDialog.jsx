@@ -56,6 +56,8 @@ const SettingsDialog = ({ settings, onSave, onClose, t }) => {
                 <option value="fr">Français</option>
                 <option value="it">Italiano</option>
                 <option value="pt">Português</option>
+                <option value="ru">Русский</option>
+                <option value="ja">日本語</option>
             </select>
             <div className="flex gap-4 mt-6">
                 <button
