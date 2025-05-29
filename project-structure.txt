@@ -35,6 +35,8 @@ Hacker-Viewer-main/
 │   │   ├── fr.json
 │   │   ├── it.json
 │   │   ├── pt.json
+│   │   ├── ru.json
+│   │   ├── ja.json
 ├── Cargo.toml
 ├── package.json
 ├── vite.config.js
