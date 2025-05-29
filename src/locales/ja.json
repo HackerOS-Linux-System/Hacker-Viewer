@@ -1,0 +1,22 @@
+{
+    "settings": "設定",
+    "hacker_menu": "ハッカーメニュー",
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "token": "トークン",
+    "remember": "記憶する",
+    "login": "ログイン",
+    "cinema_mode": "シネマモード",
+    "interface_scale": "インターフェースのスケール",
+    "brightness": "明るさ",
+    "gpu_acceleration": "GPUアクセラレーションを有効化",
+    "hdr_enabled": "HDRを有効化",
+    "theme": "テーマ",
+    "language": "言語",
+    "dark": "ダーク",
+    "light": "ライト",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "login_failed": "ログインに失敗しました: {{error}}",
+    "settings_failed": "設定の保存に失敗しました: {{error}}"
+}
