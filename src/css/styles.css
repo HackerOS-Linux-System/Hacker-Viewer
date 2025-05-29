@@ -82,7 +82,6 @@
 }
 
 @media (min-resolution: 2dppx) {
-    /* HiDPI/4K adjustments */
     .tab img, .settings-button img, .hacker-menu-button img {
         @apply w-10 h-10;
     }
