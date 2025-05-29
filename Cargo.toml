@@ -2,12 +2,12 @@
 name = "hacker-viewer"
 version = "1.0.0"
 description = "Hacker Viewer - Streaming Platform Browser with 4K HDR Support"
-authors = ["Your Name"]
+authors = ["VoidArc Studio"]
 edition = "2021"
 
 [[bin]]
 name = "hacker-viewer"
-path = "src/main.rs"
+path = "src-tauri/src/main.rs"
 
 [dependencies]
 tauri = { version = "1.7", features = ["api-all"] }
