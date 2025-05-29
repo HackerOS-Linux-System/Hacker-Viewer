@@ -46,7 +46,7 @@ fn main() {
                 WindowUrl::App("index.html".into())
             )
             .title("Hacker Viewer")
-            .fullscreen(true) // Start in fullscreen
+            .fullscreen(true)
             .build()?;
             Ok(())
         })
