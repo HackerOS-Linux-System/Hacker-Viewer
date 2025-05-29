@@ -50,7 +50,6 @@ function App() {
             i18n.changeLanguage(settings.language || 'en');
         }).catch(err => setError(t('settings_failed', { error: err })));
 
-        // Keyboard shortcuts
         const handleKeyPress = (e) => {
             if (e.ctrlKey && e.key >= '1' && e.key <= '7') {
                 const index = parseInt(e.key) - 1;
@@ -117,7 +116,7 @@ function App() {
                 gpu_acceleration: settings.gpuAcceleration,
                 theme: settings.theme,
                 language: settings.language,
-                hdr_enabled: settings.hdEnabled,
+                hdr_enabled: settings.hdrEnabled,
             });
             i18n.changeLanguage(settings.language);
             setSettingsOpen(false);
