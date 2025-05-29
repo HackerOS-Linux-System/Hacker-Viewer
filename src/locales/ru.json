@@ -1,0 +1,22 @@
+{
+    "settings": "Настройки",
+    "hacker_menu": "Меню хакера",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "token": "Токен",
+    "remember": "Запомнить",
+    "login": "Войти",
+    "cinema_mode": "Режим кино",
+    "interface_scale": "Масштаб интерфейса",
+    "brightness": "Яркость",
+    "gpu_acceleration": "Включить аппаратное ускорение GPU",
+    "hdr_enabled": "Включить HDR",
+    "theme": "Тема",
+    "language": "Язык",
+    "dark": "Темная",
+    "light": "Светлая",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "login_failed": "Ошибка входа: {{error}}",
+    "settings_failed": "Не удалось сохранить настройки: {{error}}"
+}
