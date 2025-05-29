@@ -8,6 +8,6 @@ export default defineConfig({
     },
     build: {
         outDir: 'dist',
-        target: 'esnext', // Optimize for modern browsers
+        target: 'esnext'
     },
 });
