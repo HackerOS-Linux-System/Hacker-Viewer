@@ -91,7 +91,6 @@ pub fn system_action(action: String) -> Result<(), String> {
     Ok(())
 }
 
-// Placeholder for platform-specific token fetching
 #[tauri::command]
 pub async fn fetch_platform_token(platform: String, username: String, password: String) -> Result<String, String> {
     info!("Fetching token for platform: {}", platform);
