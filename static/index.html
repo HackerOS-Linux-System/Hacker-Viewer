@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacker Viewer</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.7.2/dist/axios.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'dark-purple': '#2A1B3D',
+            'mid-purple': '#4B2E83',
+            'light-purple': '#36244F',
+            'border-purple': '#664B8C',
+          },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-dark-purple text-black font-sans">
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const platforms = [
+      { name: "Prime Video", url: "https://www.amazon.com/gp/video/storefront" },
+      { name: "Disney", url: "https://www.disneyplus.com" },
+      { name: "YouTube", url: "https://www.youtube.com" },
+      { name: "Twitch", url: "https://www.twitch.tv" },
+      { name: "Eleven Sports", url: "https://www.elevensports.pl" },
+      { name: "Netflix", url: "https://www.netflix.com" },
+      { name: "HBO", url: "https://www.hbomax.com" },
+    ];
+
+    const languages = [
+      { name: "English", code: "en_US" }, { name: "Polski", code: "pl_PL" },
+      { name: "Español", code: "es_ES" }, { name: "Deutsch", code: "de_DE" },
+      { name: "Français", code: "fr_FR" }, { name: "Italiano", code: "it_IT" },
+      { name: "Português", code: "pt_PT" }, { name: "Русский", code: "ru_RU" },
+      { name: "日本語", code: "ja_JP" }, { name: "한국어", code: "ko_KR" },
+      { name: "中文", code: "zh_CN" }, { name: "العربية", code: "ar_SA" },
+      { name: "Nederlands", code: "nl_NL" }, { name: "Svenska", code: "sv_SE" },
+      { name: "Norsk", code: "no_NO" }, { name: "Dansk", code: "da_DK" },
+      { name: "Suomi", code: "fi_FI" }, { name: "Türkçe", code: "tr_TR" },
+      { name: "Ελληνικά", code: "el_GR" }, { name: "עברית", code: "he_IL" },
+      { name: "हिन्दी", code: "hi_IN" }, { name: "Magyar", code: "hu_HU" },
+      { name: "Česky", code: "cs_CZ" }, { name: "Slovenčina", code: "sk_SK" },
+    ];
+
+    function LanguageDialog({ onClose, onSelect }) {
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-dark-purple p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl mb-4">Choose your language:</h2>
+            <select
+              className="w-full bg-light-purple text-black p-2 border border-border-purple rounded mb-4"
+              onChange={(e) => onSelect(e.target.value)}
+            >
+              {languages.map((lang) => (
+                <option key={lang.code} value={lang.code}>{lang.name}</option>
+              ))}
+            </select>
+            <button
+              className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+              onClick={onClose}
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    function SettingsDialog({ onClose, settings, setSettings }) {
+      const [localSettings, setLocalSettings] = useState(settings);
+
+      const handleSave = () => {
+        axios.post('/api/settings', localSettings)
+          .then(() => onClose())
+          .catch((err) => alert(`Failed to save settings: ${err.message}`));
+      };
+
+      return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-dark-purple p-6 rounded-lg shadow-lg w-96">
+            <h2 className="text-xl mb-4">Settings</h2>
+            <div className="mb-4">
+              <label className="block mb-2">Interface Scale: {localSettings.interfaceScale.toFixed(2)}x</label>
+              <input
+                type="range"
+                min="0.5"
+                max="2.0"
+                step="0.1"
+                value={localSettings.interfaceScale}
+                onChange={(e) => setLocalSettings({ ...localSettings, interfaceScale: parseFloat(e.target.value) })}
+                className="w-full"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2">Theme Brightness: {localSettings.brightness}%</label>
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={localSettings.brightness}
+                onChange={(e) => setLocalSettings({ ...localSettings, brightness: parseInt(e.target.value) })}
+                className="w-full bg-light-purple text-black p-2 border border-border-purple rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={localSettings.gpuAcceleration}
+                  onChange={(e) => setLocalSettings({ ...localSettings, gpuAcceleration: e.target.checked })}
+                  className="mr-2"
+                />
+                Enable GPU Acceleration
+              </label>
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+                onClick={handleSave}
+              >
+                Save
+              </button>
+              <button
+                className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function App() {
+      const [showLanguageDialog, setShowLanguageDialog] = useState(true);
+      const [showSettings, setShowSettings] = useState(false);
+      const [cinemaMode, setCinemaMode] = useState(false);
+      const [settings, setSettings] = useState({
+        interfaceScale: 1.0,
+        brightness: 50,
+        gpuAcceleration: true,
+        language: "en_US",
+      });
+      const [logins, setLogins] = useState({});
+      const [currentTab, setCurrentTab] = useState(platforms[0].name);
+
+      useEffect(() => {
+        axios.get('/api/settings').then((res) => setSettings(res.data));
+        platforms.forEach((platform) => {
+          axios.get(`/api/login/${platform.name}`).then((res) => {
+            setLogins((prev) => ({ ...prev, [platform.name]: res.data }));
+          });
+        });
+      }, []);
+
+      const handleLanguageSelect = (code) => {
+        setSettings({ ...settings, language: code });
+        axios.post('/api/settings', { ...settings, language: code });
+        setShowLanguageDialog(false);
+      };
+
+      const handleLogin = (platform) => {
+        const credentials = logins[platform.name];
+        if (!credentials.username || !credentials.password) {
+          alert("Please enter username and password");
+          return;
+        }
+        axios.post(`/api/login/${platform.name}`, credentials)
+          .catch((err) => alert(`Login failed: ${err.message}`));
+      };
+
+      const handleClearLogins = () => {
+        axios.post('/api/clear-logins')
+          .then(() => {
+            setLogins({});
+            alert("All saved logins cleared");
+          })
+          .catch((err) => alert(`Failed to clear logins: ${err.message}`));
+      };
+
+      const handleSystemAction = (action) => {
+        axios.post(`/api/system/${action}`)
+          .catch((err) => alert(`Failed to execute ${action}: ${err.message}`));
+      };
+
+      const toggleCinemaMode = () => {
+        setCinemaMode(!cinemaMode);
+        if (!cinemaMode) {
+          document.documentElement.requestFullscreen();
+          setTimeout(() => document.body.style.cursor = 'none', 2000);
+        } else {
+          document.exitFullscreen();
+          document.body.style.cursor = 'auto';
+        }
+      };
+
+      return (
+        <div className="h-screen flex flex-col" style={{ fontSize: `${16 * settings.interfaceScale}px`, filter: `brightness(${settings.brightness}%)` }}>
+          {showLanguageDialog && (
+            <LanguageDialog
+              onClose={() => setShowLanguageDialog(false)}
+              onSelect={handleLanguageSelect}
+            />
+          )}
+          {showSettings && (
+            <SettingsDialog
+              onClose={() => setShowSettings(false)}
+              settings={settings}
+              setSettings={setSettings}
+            />
+          )}
+          {!cinemaMode && (
+            <div className="flex justify-between items-center p-4">
+              <button
+                className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+                onClick={() => setShowSettings(true)}
+              >
+                <img src="/static/settings.png" alt="Settings" className="w-8 h-8 inline" />
+              </button>
+              <div className="relative">
+                <button
+                  className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+                  onClick={(e) => {
+                    const menu = document.createElement('div');
+                    menu.className = 'absolute bg-light-purple text-black rounded shadow-lg mt-2';
+                    ['Restart App', 'Reboot', 'Power Off', 'Sway Exit'].forEach((action) => {
+                      const item = document.createElement('div');
+                      item.className = 'px-4 py-2 hover:bg-mid-purple cursor-pointer';
+                      item.textContent = action;
+                      item.onclick = () => handleSystemAction(action.toLowerCase().replace(' ', '-'));
+                      menu.appendChild(item);
+                    });
+                    document.body.appendChild(menu);
+                    menu.style.left = `${e.clientX}px`;
+                    menu.style.top = `${e.clientY}px`;
+                    document.addEventListener('click', () => menu.remove(), { once: true });
+                  }}
+                >
+                  Hacker Menu
+                </button>
+              </div>
+              <img src="/static/hacker-viewer.png" alt="Logo" className="w-16 h-16" />
+            </div>
+          )}
+          <div className="flex-1 flex">
+            {!cinemaMode && (
+              <div className="w-64 bg-light-purple p-4 border-r border-border-purple">
+                {platforms.map((platform) => (
+                  <button
+                    key={platform.name}
+                    className={`w-full text-left p-2 mb-2 rounded ${
+                      currentTab === platform.name ? 'bg-mid-purple' : 'bg-light-purple'
+                    } hover:bg-border-purple`}
+                    onClick={() => setCurrentTab(platform.name)}
+                  >
+                    {platform.name}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="flex-1 p-4">
+              {platforms.map((platform) => (
+                <div key={platform.name} className={currentTab === platform.name ? 'block' : 'hidden'}>
+                  {!cinemaMode && (
+                    <div className="mb-4 flex gap-2 items-center">
+                      <span>Login to {platform.name}:</span>
+                      <input
+                        type="text"
+                        placeholder="Username"
+                        value={logins[platform.name]?.username || ''}
+                        onChange={(e) =>
+                          setLogins({ ...logins, [platform.name]: { ...logins[platform.name], username: e.target.value } })
+                        }
+                        className="bg-light-purple text-black p-2 border border-border-purple rounded"
+                      />
+                      <input
+                        type="password"
+                        placeholder="Password"
+                        value={logins[platform.name]?.password || ''}
+                        onChange={(e) =>
+                          setLogins({ ...logins, [platform.name]: { ...logins[platform.name], password: e.target.value } })
+                        }
+                        className="bg-light-purple text-black p-2 border border-border-purple rounded"
+                      />
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={logins[platform.name]?.remember || false}
+                          onChange={(e) =>
+                            setLogins({ ...logins, [platform.name]: { ...logins[platform.name], remember: e.target.checked } })
+                          }
+                          className="mr-2"
+                        />
+                        Remember
+                      </label>
+                      <button
+                        className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+                        onClick={() => handleLogin(platform)}
+                      >
+                        Login
+                      </button>
+                      <button
+                        className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+                        onClick={toggleCinemaMode}
+                      >
+                        Cinema Mode
+                      </button>
+                    </div>
+                  )}
+                  <iframe
+                    src={platform.url}
+                    className="w-full h-[calc(100vh-8rem)] border border-border-purple"
+                    style={{ transform: `scale(${settings.interfaceScale})`, transformOrigin: 'top left' }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          {!cinemaMode && (
+            <div className="p-4">
+              <button
+                className="bg-mid-purple text-black px-4 py-2 rounded border border-border-purple hover:bg-border-purple"
+                onClick={handleClearLogins}
+              >
+                Clear All Logins
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
